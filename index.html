@@ -87,6 +87,7 @@
 	  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
 	}
 	//start
+	document.getElementById('submitname').innerHTML='Retrieving Number....';
 	document.getElementById('submitname').onclick = function(){
         if(myname.value ==='') {
           alert('Please Enter Your Name');
@@ -107,10 +108,12 @@
 				        return "Thunder will strike you if you leave!";
 				    }
 				    document.getElementById('submitname').setAttribute("disabled","disabled")
+			            document.getElementById('submitname').innerHTML='Tap To Get Number';
 			        //console.log(snapshot.val());
             	} else {
             		alert ('Ooops! Position Taken.Try Again');
             		myname.value = '';
+			document.getElementById('submitname').innerHTML='Tap To Get Number';
             	} 
              });
             
