@@ -87,14 +87,14 @@
 	  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
 	}
 	//start
-	document.getElementById('submitname').innerHTML='Retrieving Number....';
+	
 	document.getElementById('submitname').onclick = function(){
         if(myname.value ==='') {
           alert('Please Enter Your Name');
         } else {
             var myposition = getRandomIntInclusive(1,8);
             var poll_info = {person:myname.value,pollstamp:timestamp,position:myposition};
-
+            document.getElementById('submitname').innerHTML='Retrieving Number....';
             firebase.database().ref('poll-results').orderByChild('position').equalTo(myposition).once('value',function(snapshot){
 
             	//console.log(snapshot.val());
