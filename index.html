@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<head>
+	<title>Poll Me</title>
+	<style type="text/css">
+		body,html {
+			margin: 0;
+			padding: 0;
+		}
+		h2, p {
+			text-align: center;
+			font-family: 'Lato';
+		}
+		h2{
+			font-size: 30px;
+			color: #fff;
+			background-color: #2DDE8D;
+		}
+		span{
+			font-size: 45px;
+			font-weight: 700;
+		}
+		input {
+			border: none;
+			height: 50px;
+			width: 70%;
+			border: 1px solid #989C9C;
+			font-size: 28px;
+			font-weight: 700;
+			color: #DE2D63;
+		}
+		button {
+			border: none;
+			padding: 10px;
+			color: #fff;
+			background-color: #DE2D63;
+		}
+		.container {
+			width: 100%;
+			height: 100%;
+		}
+		.coolbox {
+			width: 400px;
+			height: 400px;
+			margin: 10% auto;
+			padding: 10px;
+			border: 1px solid #59B2B2;
+		}
+		.
+	</style>
+</head>
+<body>
+<div class="container">
+	<div class="coolbox">
+		<h2>Chama Visiting Order</h2>
+		<p>Please Enter Your Name</p>
+		<p><input type="text" name="" id="myname"></p>
+		<p><button class="submitname" id="submitname">Tap To Get Number</button></p>
+		<p>Hi you will be number</p>
+		<p><span id="result"></span></p>
+		<p id="message"></p>
+    </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyDo23aJoPEP35go5lLt2VAJ-0YrF8oWyjg",
+    authDomain: "poll-99cf7.firebaseapp.com",
+    databaseURL: "https://poll-99cf7.firebaseio.com",
+    projectId: "poll-99cf7",
+    storageBucket: "poll-99cf7.appspot.com",
+    messagingSenderId: "880433125817"
+  };
+  firebase.initializeApp(config);
+</script>
+<script type="text/javascript">
+	var timestamp = Date.now();
+	var database = firebase.database();
+	var myname =  document.getElementById('myname');
+	function getRandomIntInclusive(min, max) {
+	  min = Math.ceil(min);
+	  max = Math.floor(max);
+	  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+	}
+	//start
+	document.getElementById('submitname').onclick = function(){
+        if(myname.value ==='') {
+          alert('Please Enter Your Name');
+        } else {
+            var myposition = getRandomIntInclusive(1,8);
+            var poll_info = {person:myname.value,pollstamp:timestamp,position:myposition};
+
+            firebase.database().ref('poll-results').orderByChild('position').equalTo(myposition).once('value',function(snapshot){
+
+            	//console.log(snapshot.val());
+            	if(snapshot.val() === null) {
+                    database.ref('poll-results').push().set(poll_info).then(function(){
+			           	document.getElementById('result').innerHTML= myposition;
+			           	document.getElementById('message').innerHTML= 'Take a screenshot of this page and share with your friends.';
+			        });
+
+			        window.onbeforeunload = function() {
+				        return "Thunder will strike you if you leave!";
+				    }
+				    document.getElementById('submitname').setAttribute("disabled","disabled")
+			        //console.log(snapshot.val());
+            	} else {
+            		alert ('Ooops! Position Taken.Try Again');
+            		myname.value = '';
+            	} 
+             });
+            
+        }
+	}
+    
+</script> 
+</body>
+</html>
